@@ -83,5 +83,44 @@ router.delete('/:id', async (req, res) => {
 });
 
 // create a reaction
+router.post('/:thoughtId/reactions', async (req, res) => {
+  try {
+    const thought = await thought.findOne({ _id: req.params.thouughtId });
+    if (!thought) {
+      return res
+        .status(400)
+        .json({ message: 'No Thought found with that ID!' });
+    }
+    const reaction = {
+      reactionBody: req.body.reactionBody,
+      username: req.body.username,
+    };
+    thought.reactions.push(reaction);
+    await thought.save();
+    res.status(200).json(thought);
+  } catch (err) {
+    res.status(500).json(err);
+    console.log(err);
+  }
+});
 
-// delete a reaction 
+// delete
+router.delete('/:thoughtId/reactions/:reactionId', async (req, res) => {
+  try {
+    const thought = await thought.findOneAndUpdate(
+      { _id: req.params.thoughtId },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
+      { runValidators: true, new: true }
+    );
+
+    if (!thought) {
+      return res.status(400).json({ message: 'No thought found' });
+    }
+    res.status(200).json(thought);
+  } catch (err) {
+    res.status(500).send(err);
+    console.log(err);
+  }
+});
+
+module.exports = router;
