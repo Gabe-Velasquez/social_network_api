@@ -3,6 +3,6 @@ const apiRoutes=('./api');
 
 router.use('/api', apiRoutes);
 
-router.use((req,res)=>res.send('Wrong route! Oopsie...'));
+router.use((req,res)=>res.send("Invalid Route"));
 
 module.exports=router;
