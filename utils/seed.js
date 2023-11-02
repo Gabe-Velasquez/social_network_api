@@ -1,19 +1,19 @@
 const connection = require('../config/connection');
-const { User }=require('../models');
+const { User, Thought }=require('../models');
 
 connection.on('error', (err)=>err);
 
 connection.once('open', async()=>{
     let userCheck=await connection.db
-    .listCollection({name:"user"})
+    .listCollections({name:"user"})
     .toArray();
     if(userCheck.length){
         await connection.dropCollection('user')
     }
     let thoughtCheck = await connection.db
-    .listCollections({name: "thoughts"}).toArray();
+    .listCollections({name: "thought"}).toArray();
     if (thoughtCheck.length){
-        await connection.dropCollection("thoughts");
+        await connection.dropCollection("thought");
     }
     await User.collection.insertMany([
         {
