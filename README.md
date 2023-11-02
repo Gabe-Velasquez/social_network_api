@@ -14,7 +14,7 @@
   This application keeps track of users along with their posts and reactions to other user's posts. 
 
   ## Installation <a name='installation'></a>
-  node, dayjs, and mongoose were used to create this application
+  express, dayjs, and mongoose were used to create this application
 
   ## Usage <a name='usage'></a>
   When "npm start" is entered in the command line, it will start the application and able to test end points of users, thoughts as well as reactions. You will be able to see how many thoughts a certain user has posted since creating their account. You can delete thoughts and reactions from the database as well. 
