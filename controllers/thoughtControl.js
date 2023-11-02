@@ -13,7 +13,7 @@ module.exports = {
   async getThoughtId(req, res) {
     try {
       const thought = await Thought.findOne({ _id: req.params.thoughtId });
-      req.status(200).json(thought);
+      res.status(200).json(thought);
     } catch (err) {
       res.status(500).json(err);
     }
@@ -40,7 +40,7 @@ module.exports = {
         { $set: req.body },
         { new: true, runValidators: true }
       );
-      req.status(200).json(thought);
+      res.status(200).json(thought);
     } catch (err) {
       res.status(500).json(err);
     }

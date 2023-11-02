@@ -3,7 +3,7 @@ const { Thought, User } = require('../models');
 module.exports = {
   async getAllUsers(req, res) {
     try {
-      const users = await User.find().polulate({
+      const users = await User.find().populate({
         path: 'thoughts',
         select: '-__v',
       });
@@ -40,14 +40,14 @@ module.exports = {
         { $set: req.body },
         { new: true, runValidators: true }
       );
-      res.status(200).json(user);
+      res.status(200).json(updatedUser);
     } catch (err) {
       res.status(500).json(err);
     }
   },
   async deleteUser(req, res) {
     try {
-      const user = await User.findOneAndDelete({ _id: req.parans.id });
+      const user = await User.findOneAndDelete({ _id: req.params.id });
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json(err);
@@ -66,11 +66,6 @@ module.exports = {
           { $push: { friends: req.params.userId } },
           { new: true }
         );
-        const newFriend2 = await User.findOneAndUpdate(
-          { _id: req.params.friendId },
-          { $push: { friends: req.params.userId } },
-          { new: true }
-        );
         req.status(200).json(newFriend1);
       } else {
         res.status(200).json({ message: `You're already friends with them` });
@@ -84,11 +79,6 @@ module.exports = {
       const delFriend = await User.findOneAndUpdate(
         { _id: req.params.userId },
         { $pull: { friends: req.params.friendId } },
-        { new: true }
-      );
-      const delFriend2 = await User.findOneAndUpdate(
-        { _id: req.params.friendId },
-        { $pull: { friends: req.params.userId } },
         { new: true }
       );
       res.status(200).json(delFriend);
